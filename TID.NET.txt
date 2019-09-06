@@ -1,0 +1,37 @@
+
+
+
+VB.NET
+==============================
+Public Class Form1
+
+Private Sub Button1_Click(sender As System.Object, e As System.EventArgs) Handles Button1.Click
+If VerifyPeopleID(TextBox1.Text) Then
+MessageBox.Show("รหัสบัตรประชาชนถูกต้อง", "รายงานสถานะ")
+Else
+MessageBox.Show("รหัสบัตรประชาชนไม่ถูกต้อง", "รายงานสถานะ")
+End If
+End Sub
+
+Private Function VerifyPeopleID(PID As [String]) As [Boolean]
+'ตรวจสอบว่าทุก ๆ ตัวอักษรเป็นตัวเลข
+If PID.ToCharArray().All(Function(c) Char.IsNumber(c)) = False Then
+Return False
+End If
+'ตรวจสอบว่าข้อมูลมีทั้งหมด 13 ตัวอักษร
+If PID.Trim().Length <> 13 Then
+Return False
+End If
+
+Dim sumValue As Integer = 0
+For i As Integer = 0 To PID.Length - 2
+sumValue += Integer.Parse(PID(i).ToString()) * (13 - i)
+Next
+Dim v As Integer = 11 - (sumValue Mod 11)
+Return PID(12).ToString() = v.ToString()
+End Function
+
+Private Sub Button2_Click(sender As System.Object, e As System.EventArgs) Handles Button2.Click
+TextBox1.Text = ""
+End Sub
+End Class
